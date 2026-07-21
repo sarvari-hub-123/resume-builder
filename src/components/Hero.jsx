@@ -9,7 +9,7 @@ function Hero() {
       sx={{
         background: "linear-gradient(135deg, #2563EB, #4F46E5)",
         color: "#fff",
-        py: 10,
+        py: 8,
         textAlign: "center",
         borderRadius: 4,
         mt: 4,
@@ -18,8 +18,11 @@ function Hero() {
     >
       <Container maxWidth="md">
         <Typography
-          variant="h2"
-          fontWeight="bold"
+          variant="h3"
+          sx={{
+           fontWeight: "bold",
+           lineHeight: 1.2,
+          }}
           gutterBottom
         >
           Build Your Dream Resume

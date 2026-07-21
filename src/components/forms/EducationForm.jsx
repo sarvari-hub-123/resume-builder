@@ -5,7 +5,7 @@ import {
   Button,
   Grid,
 } from "@mui/material";
-import { useForm } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { saveEducation } from "../../redux/resumeSlice";
 
@@ -13,12 +13,29 @@ function EducationForm({ nextStep, prevStep }) {
   const dispatch = useDispatch();
 
   const {
+    control,
     register,
     handleSubmit,
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      education: [
+        {
+          degree: "",
+          college: "",
+          year: "",
+          percentage: "",
+        },
+      ],
+    },
+  });
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "education",
+  });
 
   const onSubmit = (data) => {
-    dispatch(saveEducation(data));
+    dispatch(saveEducation(data.education));
     nextStep();
   };
 
@@ -30,106 +47,113 @@ function EducationForm({ nextStep, prevStep }) {
         fontWeight="bold"
         gutterBottom
       >
-        Education Details
+        Education
       </Typography>
 
       <Typography
         color="text.secondary"
         sx={{ mb: 4 }}
       >
-        Add your academic background to complete your resume.
+        Add all your educational qualifications.
       </Typography>
-
 
       <form onSubmit={handleSubmit(onSubmit)}>
 
-        <Grid container spacing={3}>
+        {fields.map((field, index) => (
+          <Box
+            key={field.id}
+            sx={{
+              mb: 4,
+              p: 3,
+              border: "1px solid #ddd",
+              borderRadius: 2,
+            }}
+          >
+            <Grid container spacing={2}>
 
-          <Grid item xs={12}>
-            <TextField
-              label="College / University Name"
-              fullWidth
-              {...register("college")}
-            />
-          </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  label="Degree / Qualification"
+                  placeholder="SSC / Intermediate / B.Tech"
+                  {...register(`education.${index}.degree`)}
+                />
+              </Grid>
 
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  label="School / College"
+                  {...register(`education.${index}.college`)}
+                />
+              </Grid>
 
-          <Grid item xs={12} md={6}>
-            <TextField
-              label="Degree"
-              placeholder="Example: B.Tech Computer Science"
-              fullWidth
-              {...register("degree")}
-            />
-          </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  fullWidth
+                  label="Passing Year"
+                  {...register(`education.${index}.year`)}
+                />
+              </Grid>
 
+              <Grid item xs={6}>
+                <TextField
+                  fullWidth
+                  label="Percentage / CGPA"
+                  {...register(`education.${index}.percentage`)}
+                />
+              </Grid>
 
-          <Grid item xs={12} md={6}>
-            <TextField
-              label="Passing Year"
-              placeholder="Example: 2026"
-              fullWidth
-              {...register("year")}
-            />
-          </Grid>
+              {fields.length > 1 && (
+                <Grid item xs={12}>
+                  <Button
+                    color="error"
+                    onClick={() => remove(index)}
+                  >
+                    Remove Education
+                  </Button>
+                </Grid>
+              )}
 
+            </Grid>
+          </Box>
+        ))}
 
-          <Grid item xs={12}>
-            <TextField
-              label="Percentage / CGPA"
-              placeholder="Example: 8.5 CGPA"
-              fullWidth
-              {...register("percentage")}
-            />
-          </Grid>
+        <Button
+          variant="outlined"
+          sx={{ mb: 3 }}
+          onClick={() =>
+            append({
+              degree: "",
+              college: "",
+              year: "",
+              percentage: "",
+            })
+          }
+        >
+          + Add Education
+        </Button>
 
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        >
+          <Button
+            variant="outlined"
+            onClick={prevStep}
+          >
+            ← Back
+          </Button>
 
-          <Grid item xs={12}>
-
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                mt: 2,
-              }}
-            >
-
-              <Button
-                variant="outlined"
-                size="large"
-                onClick={prevStep}
-                sx={{
-                  px: 4,
-                  py: 1.2,
-                  borderRadius: 3,
-                  textTransform: "none",
-                  fontWeight: "bold",
-                }}
-              >
-                ← Back
-              </Button>
-
-
-              <Button
-                variant="contained"
-                size="large"
-                type="submit"
-                sx={{
-                  px: 5,
-                  py: 1.2,
-                  borderRadius: 3,
-                  textTransform: "none",
-                  fontWeight: "bold",
-                }}
-              >
-                Next →
-              </Button>
-
-            </Box>
-
-          </Grid>
-
-        </Grid>
+          <Button
+            variant="contained"
+            type="submit"
+          >
+            Next →
+          </Button>
+        </Box>
 
       </form>
 

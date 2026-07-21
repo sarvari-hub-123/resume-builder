@@ -3,37 +3,29 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   personal: {
     fullName: "",
+    jobTitle: "",
     email: "",
     phone: "",
     address: "",
     linkedin: "",
     github: "",
+    portfolio: "",
+    summary: "",
+    photo: "",
   },
 
-  experience: {
-    company: "",
-    role: "",
-    duration: "",
-    description: "",
-  },
+  education: [],
 
-  education: {
-    college: "",
-    degree: "",
-    year: "",
-    percentage: "",
-  },
+  experience: [],
 
-  skills: {
-    skill1: "",
-    skill2: "",
-    skill3: "",
-  },
+  projects: [],
 
-  // New field for resume templates
+  skills: [],
+
+  certifications: [],
+
   template: "professional",
 };
-
 
 const resumeSlice = createSlice({
   name: "resume",
@@ -41,43 +33,44 @@ const resumeSlice = createSlice({
   initialState,
 
   reducers: {
-
     savePersonal(state, action) {
       state.personal = action.payload;
     },
-
-
-    saveExperience(state, action) {
-      state.experience = action.payload;
-    },
-
 
     saveEducation(state, action) {
       state.education = action.payload;
     },
 
+    saveExperience(state, action) {
+      state.experience = action.payload;
+    },
+
+    saveProjects(state, action) {
+      state.projects = action.payload;
+    },
 
     saveSkills(state, action) {
       state.skills = action.payload;
     },
 
+    saveCertifications(state, action) {
+      state.certifications = action.payload;
+    },
 
-    // Change Resume Template
     changeTemplate(state, action) {
       state.template = action.payload;
     },
-
   },
 });
 
-
 export const {
   savePersonal,
-  saveExperience,
   saveEducation,
+  saveExperience,
+  saveProjects,
   saveSkills,
+  saveCertifications,
   changeTemplate,
 } = resumeSlice.actions;
-
 
 export default resumeSlice.reducer;

@@ -7,23 +7,21 @@ import {
 } from "@mui/material";
 import { useForm, useFieldArray } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import { saveExperience } from "../../redux/resumeSlice";
+import { saveCertifications } from "../../redux/resumeSlice";
+import { useNavigate } from "react-router-dom";
 
-function ExperienceForm({ nextStep, prevStep }) {
+function CertificationsForm({ prevStep }) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const {
-    control,
-    register,
-    handleSubmit,
-  } = useForm({
+  const { control, register, handleSubmit } = useForm({
     defaultValues: {
-      experience: [
+      certifications: [
         {
-          company: "",
-          role: "",
-          duration: "",
-          description: "",
+          certificate: "",
+          organization: "",
+          year: "",
+          credentialId: "",
         },
       ],
     },
@@ -31,12 +29,12 @@ function ExperienceForm({ nextStep, prevStep }) {
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "experience",
+    name: "certifications",
   });
 
   const onSubmit = (data) => {
-    dispatch(saveExperience(data.experience));
-    nextStep();
+    dispatch(saveCertifications(data.certifications));
+    navigate("/preview");
   };
 
   return (
@@ -47,14 +45,14 @@ function ExperienceForm({ nextStep, prevStep }) {
         fontWeight="bold"
         gutterBottom
       >
-        Work Experience
+        Certifications
       </Typography>
 
       <Typography
         color="text.secondary"
         sx={{ mb: 4 }}
       >
-        Add your internships and work experience.
+        Add your certifications.
       </Typography>
 
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -72,38 +70,35 @@ function ExperienceForm({ nextStep, prevStep }) {
 
             <Grid container spacing={2}>
 
-              <Grid item xs={12} md={6}>
+              <Grid item xs={12}>
                 <TextField
                   fullWidth
-                  label="Company"
-                  {...register(`experience.${index}.company`)}
-                />
-              </Grid>
-
-              <Grid item xs={12} md={6}>
-                <TextField
-                  fullWidth
-                  label="Role"
-                  {...register(`experience.${index}.role`)}
+                  label="Certificate Name"
+                  {...register(`certifications.${index}.certificate`)}
                 />
               </Grid>
 
               <Grid item xs={12}>
                 <TextField
                   fullWidth
-                  label="Duration"
-                  placeholder="Jan 2025 - Jun 2025"
-                  {...register(`experience.${index}.duration`)}
+                  label="Organization"
+                  {...register(`certifications.${index}.organization`)}
                 />
               </Grid>
 
-              <Grid item xs={12}>
+              <Grid item xs={6}>
                 <TextField
                   fullWidth
-                  multiline
-                  rows={4}
-                  label="Description"
-                  {...register(`experience.${index}.description`)}
+                  label="Year"
+                  {...register(`certifications.${index}.year`)}
+                />
+              </Grid>
+
+              <Grid item xs={6}>
+                <TextField
+                  fullWidth
+                  label="Credential ID"
+                  {...register(`certifications.${index}.credentialId`)}
                 />
               </Grid>
 
@@ -113,7 +108,7 @@ function ExperienceForm({ nextStep, prevStep }) {
                     color="error"
                     onClick={() => remove(index)}
                   >
-                    Remove Experience
+                    Remove
                   </Button>
                 </Grid>
               )}
@@ -128,14 +123,14 @@ function ExperienceForm({ nextStep, prevStep }) {
           sx={{ mb: 3 }}
           onClick={() =>
             append({
-              company: "",
-              role: "",
-              duration: "",
-              description: "",
+              certificate: "",
+              organization: "",
+              year: "",
+              credentialId: "",
             })
           }
         >
-          + Add Experience
+          + Add Certification
         </Button>
 
         <Box
@@ -155,7 +150,7 @@ function ExperienceForm({ nextStep, prevStep }) {
             variant="contained"
             type="submit"
           >
-            Next →
+            Preview Resume
           </Button>
         </Box>
 
@@ -165,4 +160,4 @@ function ExperienceForm({ nextStep, prevStep }) {
   );
 }
 
-export default ExperienceForm;
+export default CertificationsForm;

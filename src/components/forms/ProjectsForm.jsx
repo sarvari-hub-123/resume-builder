@@ -7,22 +7,19 @@ import {
 } from "@mui/material";
 import { useForm, useFieldArray } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import { saveExperience } from "../../redux/resumeSlice";
+import { saveProjects } from "../../redux/resumeSlice";
 
-function ExperienceForm({ nextStep, prevStep }) {
+function ProjectsForm({ nextStep, prevStep }) {
   const dispatch = useDispatch();
 
-  const {
-    control,
-    register,
-    handleSubmit,
-  } = useForm({
+  const { control, register, handleSubmit } = useForm({
     defaultValues: {
-      experience: [
+      projects: [
         {
-          company: "",
-          role: "",
-          duration: "",
+          title: "",
+          techStack: "",
+          github: "",
+          liveDemo: "",
           description: "",
         },
       ],
@@ -31,11 +28,11 @@ function ExperienceForm({ nextStep, prevStep }) {
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "experience",
+    name: "projects",
   });
 
   const onSubmit = (data) => {
-    dispatch(saveExperience(data.experience));
+    dispatch(saveProjects(data.projects));
     nextStep();
   };
 
@@ -47,14 +44,14 @@ function ExperienceForm({ nextStep, prevStep }) {
         fontWeight="bold"
         gutterBottom
       >
-        Work Experience
+        Projects
       </Typography>
 
       <Typography
         color="text.secondary"
         sx={{ mb: 4 }}
       >
-        Add your internships and work experience.
+        Add your academic and personal projects.
       </Typography>
 
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -72,28 +69,36 @@ function ExperienceForm({ nextStep, prevStep }) {
 
             <Grid container spacing={2}>
 
-              <Grid item xs={12} md={6}>
+              <Grid item xs={12}>
                 <TextField
                   fullWidth
-                  label="Company"
-                  {...register(`experience.${index}.company`)}
-                />
-              </Grid>
-
-              <Grid item xs={12} md={6}>
-                <TextField
-                  fullWidth
-                  label="Role"
-                  {...register(`experience.${index}.role`)}
+                  label="Project Title"
+                  {...register(`projects.${index}.title`)}
                 />
               </Grid>
 
               <Grid item xs={12}>
                 <TextField
                   fullWidth
-                  label="Duration"
-                  placeholder="Jan 2025 - Jun 2025"
-                  {...register(`experience.${index}.duration`)}
+                  label="Tech Stack"
+                  placeholder="React, Redux, Node.js..."
+                  {...register(`projects.${index}.techStack`)}
+                />
+              </Grid>
+
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  label="GitHub Link"
+                  {...register(`projects.${index}.github`)}
+                />
+              </Grid>
+
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  label="Live Demo"
+                  {...register(`projects.${index}.liveDemo`)}
                 />
               </Grid>
 
@@ -102,8 +107,8 @@ function ExperienceForm({ nextStep, prevStep }) {
                   fullWidth
                   multiline
                   rows={4}
-                  label="Description"
-                  {...register(`experience.${index}.description`)}
+                  label="Project Description"
+                  {...register(`projects.${index}.description`)}
                 />
               </Grid>
 
@@ -113,29 +118,29 @@ function ExperienceForm({ nextStep, prevStep }) {
                     color="error"
                     onClick={() => remove(index)}
                   >
-                    Remove Experience
+                    Remove Project
                   </Button>
                 </Grid>
               )}
 
             </Grid>
-
           </Box>
         ))}
 
         <Button
           variant="outlined"
-          sx={{ mb: 3 }}
           onClick={() =>
             append({
-              company: "",
-              role: "",
-              duration: "",
+              title: "",
+              techStack: "",
+              github: "",
+              liveDemo: "",
               description: "",
             })
           }
+          sx={{ mb: 3 }}
         >
-          + Add Experience
+          + Add Another Project
         </Button>
 
         <Box
@@ -165,4 +170,4 @@ function ExperienceForm({ nextStep, prevStep }) {
   );
 }
 
-export default ExperienceForm;
+export default ProjectsForm;

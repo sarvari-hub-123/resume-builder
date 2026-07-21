@@ -4,13 +4,17 @@ import {
   Box,
   Typography,
   Grid,
+  Avatar,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
+import { useState } from "react";
 import { savePersonal } from "../../redux/resumeSlice";
 
 function PersonalForm({ nextStep }) {
   const dispatch = useDispatch();
+
+  const [photo, setPhoto] = useState("");
 
   const {
     register,
@@ -18,13 +22,34 @@ function PersonalForm({ nextStep }) {
     formState: { errors },
   } = useForm();
 
+  const handlePhoto = (e) => {
+    const file = e.target.files[0];
+
+    if (!file) return;
+
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
+      setPhoto(reader.result);
+    };
+
+    reader.readAsDataURL(file);
+  };
+
   const onSubmit = (data) => {
-    dispatch(savePersonal(data));
+    dispatch(
+      savePersonal({
+        ...data,
+        photo,
+      })
+    );
+
     nextStep();
   };
 
   return (
     <Box>
+
       <Typography
         variant="h4"
         fontWeight="bold"
@@ -37,11 +62,46 @@ function PersonalForm({ nextStep }) {
         color="text.secondary"
         sx={{ mb: 4 }}
       >
-        Enter your personal details to begin building your resume.
+        Enter your personal information.
       </Typography>
 
       <form onSubmit={handleSubmit(onSubmit)}>
+
         <Grid container spacing={3}>
+
+          <Grid
+            item
+            xs={12}
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <Avatar
+              src={photo}
+              sx={{
+                width: 120,
+                height: 120,
+                mb: 2,
+              }}
+            />
+
+            <Button
+              variant="outlined"
+              component="label"
+            >
+              Upload Photo
+
+              <input
+                hidden
+                type="file"
+                accept="image/*"
+                onChange={handlePhoto}
+              />
+            </Button>
+
+          </Grid>
 
           <Grid item xs={12} md={6}>
             <TextField
@@ -52,6 +112,15 @@ function PersonalForm({ nextStep }) {
               })}
               error={!!errors.fullName}
               helperText={errors.fullName?.message}
+            />
+          </Grid>
+
+          <Grid item xs={12} md={6}>
+            <TextField
+              label="Job Title"
+              fullWidth
+              placeholder="Frontend Developer"
+              {...register("jobTitle")}
             />
           </Grid>
 
@@ -75,7 +144,7 @@ function PersonalForm({ nextStep }) {
             />
           </Grid>
 
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12}>
             <TextField
               label="Address"
               fullWidth
@@ -85,7 +154,7 @@ function PersonalForm({ nextStep }) {
 
           <Grid item xs={12}>
             <TextField
-              label="LinkedIn Profile"
+              label="LinkedIn URL"
               fullWidth
               {...register("linkedin")}
             />
@@ -93,9 +162,28 @@ function PersonalForm({ nextStep }) {
 
           <Grid item xs={12}>
             <TextField
-              label="GitHub Profile"
+              label="GitHub URL"
               fullWidth
               {...register("github")}
+            />
+          </Grid>
+
+          <Grid item xs={12}>
+            <TextField
+              label="Portfolio Website"
+              fullWidth
+              {...register("portfolio")}
+            />
+          </Grid>
+
+          <Grid item xs={12}>
+            <TextField
+              label="Professional Summary"
+              fullWidth
+              multiline
+              rows={5}
+              placeholder="Write a short professional summary..."
+              {...register("summary")}
             />
           </Grid>
 
@@ -104,20 +192,12 @@ function PersonalForm({ nextStep }) {
               sx={{
                 display: "flex",
                 justifyContent: "flex-end",
-                mt: 2,
               }}
             >
               <Button
                 variant="contained"
                 size="large"
                 type="submit"
-                sx={{
-                  px: 5,
-                  py: 1.3,
-                  borderRadius: 3,
-                  textTransform: "none",
-                  fontWeight: "bold",
-                }}
               >
                 Next →
               </Button>
@@ -125,7 +205,9 @@ function PersonalForm({ nextStep }) {
           </Grid>
 
         </Grid>
+
       </form>
+
     </Box>
   );
 }

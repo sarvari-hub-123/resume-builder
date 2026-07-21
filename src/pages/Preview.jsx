@@ -7,6 +7,7 @@ import {
   Paper,
   TextField,
   Typography,
+  Divider,
 } from "@mui/material";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -21,46 +22,31 @@ import SimpleTemplate from "../components/templates/SimpleTemplate";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 
-
 function Preview() {
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
 
   const selectedTemplate = useSelector(
     (state) => state.resume.template
   );
 
-
   const [resumeName, setResumeName] = useState("");
 
-
   const downloadPDF = async () => {
-
     const resume = document.getElementById("resume");
 
     const canvas = await html2canvas(resume, {
       scale: 2,
     });
 
-
     const imgData = canvas.toDataURL("image/png");
 
-
-    const pdf = new jsPDF(
-      "p",
-      "mm",
-      "a4"
-    );
-
+    const pdf = new jsPDF("p", "mm", "a4");
 
     const imgWidth = 210;
 
     const imgHeight =
-      (canvas.height * imgWidth) /
-      canvas.width;
-
+      (canvas.height * imgWidth) / canvas.width;
 
     pdf.addImage(
       imgData,
@@ -71,198 +57,179 @@ function Preview() {
       imgHeight
     );
 
-
-    pdf.save(
-      `${resumeName || "Resume"}.pdf`
-    );
-
+    pdf.save(`${resumeName || "Resume"}.pdf`);
   };
 
-
-
   const renderTemplate = () => {
-
-    if(selectedTemplate === "modern"){
+    if (selectedTemplate === "modern") {
       return <ModernTemplate />;
     }
 
-
-    if(selectedTemplate === "simple"){
+    if (selectedTemplate === "simple") {
       return <SimpleTemplate />;
     }
 
-
     return <ProfessionalTemplate />;
-
   };
-
-
 
   return (
     <>
       <Navbar />
 
-
-      <Container sx={{ mt:4 }}>
-
-
+      <Container maxWidth="xl" sx={{ mt: 5, mb: 5 }}>
         <Typography
-          variant="h4"
+          variant="h3"
           align="center"
           fontWeight="bold"
         >
           Resume Preview
         </Typography>
 
-
+        <Typography
+          align="center"
+          color="text.secondary"
+          sx={{ mb: 5 }}
+        >
+          Choose a template and download your professional resume.
+        </Typography>
 
         <Box
           sx={{
-            display:"flex",
-            gap:4,
-            mt:4
+            display: "flex",
+            gap: 4,
+            alignItems: "flex-start",
           }}
         >
-
-
-
-          {/* Resume */}
+          {/* Resume Preview */}
 
           <Paper
-            elevation={3}
+            elevation={8}
             sx={{
-              flex:2,
-              p:3
+              flex: 2,
+              p: 4,
+              borderRadius: 4,
+              background: "#fafafa",
             }}
           >
-
             {renderTemplate()}
-
           </Paper>
 
-
-
-
-          {/* Controls */}
+          {/* Right Panel */}
 
           <Paper
-            elevation={3}
+            elevation={8}
             sx={{
-              flex:1,
-              p:3
+              width: 330,
+              p: 4,
+              borderRadius: 4,
+              position: "sticky",
+              top: 90,
             }}
           >
+            <Typography
+              variant="h5"
+              fontWeight="bold"
+              gutterBottom
+            >
+              Controls
+            </Typography>
 
+            <Divider sx={{ mb: 3 }} />
 
             <Typography
-              variant="h6"
+              variant="subtitle1"
               fontWeight="bold"
               mb={2}
             >
               Choose Template
             </Typography>
 
-
-
             <Button
               fullWidth
-              variant="outlined"
-              sx={{mb:1}}
+              variant={
+                selectedTemplate === "professional"
+                  ? "contained"
+                  : "outlined"
+              }
+              sx={{ mb: 2 }}
               onClick={() =>
-                dispatch(
-                  changeTemplate("professional")
-                )
+                dispatch(changeTemplate("professional"))
               }
             >
               Professional
             </Button>
 
-
-
             <Button
               fullWidth
-              variant="outlined"
-              sx={{mb:1}}
+              variant={
+                selectedTemplate === "modern"
+                  ? "contained"
+                  : "outlined"
+              }
+              sx={{ mb: 2 }}
               onClick={() =>
-                dispatch(
-                  changeTemplate("modern")
-                )
+                dispatch(changeTemplate("modern"))
               }
             >
               Modern
             </Button>
 
-
-
             <Button
               fullWidth
-              variant="outlined"
-              sx={{mb:3}}
+              variant={
+                selectedTemplate === "simple"
+                  ? "contained"
+                  : "outlined"
+              }
+              sx={{ mb: 4 }}
               onClick={() =>
-                dispatch(
-                  changeTemplate("simple")
-                )
+                dispatch(changeTemplate("simple"))
               }
             >
               Simple
             </Button>
 
-
-
             <Typography
-              variant="h6"
+              variant="subtitle1"
+              fontWeight="bold"
               mb={2}
             >
-              Resume Name
+              PDF File Name
             </Typography>
-
-
 
             <TextField
               fullWidth
-              label="File Name"
+              label="Resume Name"
               value={resumeName}
-              onChange={(e)=>
+              onChange={(e) =>
                 setResumeName(e.target.value)
               }
-              sx={{mb:3}}
+              sx={{ mb: 4 }}
             />
-
-
 
             <Button
               fullWidth
               variant="outlined"
-              sx={{mb:2}}
-              onClick={() =>
-                navigate("/details")
-              }
+              size="large"
+              sx={{ mb: 2 }}
+              onClick={() => navigate("/details")}
             >
-              Back
+              ← Back
             </Button>
-
-
 
             <Button
               fullWidth
               variant="contained"
+              size="large"
               onClick={downloadPDF}
             >
               Download PDF
             </Button>
-
-
           </Paper>
-
-
         </Box>
-
-
       </Container>
-
     </>
   );
 }
-
 
 export default Preview;

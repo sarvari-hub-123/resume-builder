@@ -1,6 +1,8 @@
 import Navbar from "../components/Navbar";
 import Hero from "../components/Hero";
 import TemplateCard from "../components/TemplateCard";
+import Footer from "../components/Footer";
+
 import templates from "../data/templates";
 
 import {
@@ -9,151 +11,59 @@ import {
   Grid,
   Box,
   Paper,
-  Button,
 } from "@mui/material";
 
-import { useNavigate } from "react-router-dom";
-
+import DescriptionIcon from "@mui/icons-material/Description";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import DownloadIcon from "@mui/icons-material/Download";
+import DevicesIcon from "@mui/icons-material/Devices";
 
 function Home() {
-
-  const navigate = useNavigate();
-
-
   return (
     <>
       <Navbar />
 
-
       <Container maxWidth="lg">
 
-
         {/* Hero Section */}
-
         <Hero />
 
-
-
-        {/* Call To Action */}
-
-        <Box
-          sx={{
-            textAlign:"center",
-            mt:5,
-            mb:8
-          }}
-        >
-
-          <Typography
-            variant="h4"
-            fontWeight="bold"
-          >
-            Build Your Professional Resume Today
-          </Typography>
-
-
-          <Typography
-            color="text.secondary"
-            sx={{mt:1}}
-          >
-            Create, customize and download your resume in minutes.
-          </Typography>
-
-
-          <Button
-            variant="contained"
-            size="large"
-            sx={{
-              mt:3,
-              px:5,
-              py:1.5,
-              borderRadius:3,
-              textTransform:"none",
-              fontWeight:"bold"
-            }}
-            onClick={() =>
-              navigate("/details")
-            }
-          >
-            Create Resume
-          </Button>
-
-
-        </Box>
-
-
-
-
-
-        {/* Templates Section */}
-
-
-        <Box
-          id="templates"
-          sx={{mb:8}}
-        >
-
+        {/* Templates */}
+        <Box id="templates" sx={{ mb: 10 }}>
           <Typography
             variant="h3"
             align="center"
             fontWeight="bold"
+            gutterBottom
           >
             Choose Your Resume Template
           </Typography>
 
-
           <Typography
             align="center"
             color="text.secondary"
-            sx={{mt:2, mb:5}}
+            sx={{ mb: 6 }}
           >
             Select a professional design and create your resume easily.
           </Typography>
-
-
 
           <Grid
             container
             spacing={4}
             justifyContent="center"
           >
-
-            {
-              templates.map((template)=>(
-                
-                <Grid
-                  item
-                  key={template.id}
-                >
-
-                  <TemplateCard
-                    template={template}
-                  />
-
-                </Grid>
-
-              ))
-            }
-
-
+            {templates.map((template) => (
+              <Grid item key={template.id}>
+                <TemplateCard template={template} />
+              </Grid>
+            ))}
           </Grid>
-
-
         </Box>
 
-
-
-
-
-
         {/* Features */}
-
-
-        <Box sx={{mb:8}}>
-
-
+        <Box sx={{ mb: 10 }}>
           <Typography
-            variant="h4"
+            variant="h3"
             align="center"
             fontWeight="bold"
             gutterBottom
@@ -161,93 +71,148 @@ function Home() {
             Why Choose Our Resume Builder?
           </Typography>
 
-
-
-          <Grid
-            container
-            spacing={4}
-            sx={{mt:3}}
+          <Typography
+            align="center"
+            color="text.secondary"
+            sx={{ mb: 6 }}
           >
+            Everything you need to build a professional resume.
+          </Typography>
 
+          <Grid container spacing={4}>
 
-            {
-              [
-                {
-                  title:"ATS Friendly",
-                  desc:"Create resumes optimized for modern recruitment systems."
-                },
+            <Grid item xs={12} md={6} lg={3}>
+              <Paper
+                elevation={8}
+                sx={{
+                  p: 4,
+                  borderRadius: 5,
+                  textAlign: "center",
+                  transition: "0.3s",
+                  "&:hover": {
+                    transform: "translateY(-10px)",
+                  },
+                }}
+              >
+                <DescriptionIcon
+                  sx={{
+                    fontSize: 55,
+                    color: "#2563EB",
+                    mb: 2,
+                  }}
+                />
 
-                {
-                  title:"Live Preview",
-                  desc:"See your resume design instantly while editing."
-                },
+                <Typography variant="h6" fontWeight="bold">
+                  ATS Friendly
+                </Typography>
 
-                {
-                  title:"PDF Download",
-                  desc:"Download your professional resume anytime."
-                },
+                <Typography sx={{ mt: 2 }}>
+                  Create resumes optimized for modern recruitment systems.
+                </Typography>
+              </Paper>
+            </Grid>
 
-                {
-                  title:"Responsive",
-                  desc:"Works perfectly across all devices."
-                }
+            <Grid item xs={12} md={6} lg={3}>
+              <Paper
+                elevation={8}
+                sx={{
+                  p: 4,
+                  borderRadius: 5,
+                  textAlign: "center",
+                  transition: "0.3s",
+                  "&:hover": {
+                    transform: "translateY(-10px)",
+                  },
+                }}
+              >
+                <VisibilityIcon
+                  sx={{
+                    fontSize: 55,
+                    color: "#2563EB",
+                    mb: 2,
+                  }}
+                />
 
-              ].map((feature)=>(
-                
-                <Grid
-                  item
-                  xs={12}
-                  md={3}
-                  key={feature.title}
-                >
+                <Typography variant="h6" fontWeight="bold">
+                  Live Preview
+                </Typography>
 
-                  <Paper
-                    elevation={4}
-                    sx={{
-                      p:4,
-                      textAlign:"center",
-                      borderRadius:4,
-                      height:"100%"
-                    }}
-                  >
+                <Typography sx={{ mt: 2 }}>
+                  Preview your resume instantly while editing.
+                </Typography>
+              </Paper>
+            </Grid>
 
-                    <Typography
-                      variant="h6"
-                      fontWeight="bold"
-                    >
-                      {feature.title}
-                    </Typography>
+            <Grid item xs={12} md={6} lg={3}>
+              <Paper
+                elevation={8}
+                sx={{
+                  p: 4,
+                  borderRadius: 5,
+                  textAlign: "center",
+                  transition: "0.3s",
+                  "&:hover": {
+                    transform: "translateY(-10px)",
+                  },
+                }}
+              >
+                <DownloadIcon
+                  sx={{
+                    fontSize: 55,
+                    color: "#2563EB",
+                    mb: 2,
+                  }}
+                />
 
+                <Typography variant="h6" fontWeight="bold">
+                  PDF Download
+                </Typography>
 
-                    <Typography
-                      variant="body2"
-                      color="text.secondary"
-                      sx={{mt:2}}
-                    >
-                      {feature.desc}
-                    </Typography>
+                <Typography sx={{ mt: 2 }}>
+                  Download your resume as a professional PDF with one click.
+                </Typography>
+              </Paper>
+            </Grid>
 
+            <Grid item xs={12} md={6} lg={3}>
+              <Paper
+                elevation={8}
+                sx={{
+                  p: 4,
+                  borderRadius: 5,
+                  textAlign: "center",
+                  transition: "0.3s",
+                  "&:hover": {
+                    transform: "translateY(-10px)",
+                  },
+                }}
+              >
+                <DevicesIcon
+                  sx={{
+                    fontSize: 55,
+                    color: "#2563EB",
+                    mb: 2,
+                  }}
+                />
 
-                  </Paper>
+                <Typography variant="h6" fontWeight="bold">
+                  Responsive
+                </Typography>
 
-
-                </Grid>
-
-              ))
-            }
-
+                <Typography sx={{ mt: 2 }}>
+                  Works perfectly across desktop, tablet and mobile devices.
+                </Typography>
+              </Paper>
+            </Grid>
 
           </Grid>
-
-
         </Box>
-
 
       </Container>
 
+      <Footer />
     </>
   );
 }
-
 
 export default Home;

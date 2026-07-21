@@ -5,23 +5,36 @@ import {
   Button,
   Grid,
 } from "@mui/material";
-import { useForm } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { saveSkills } from "../../redux/resumeSlice";
-import { useNavigate } from "react-router-dom";
 
-function SkillsForm({ prevStep }) {
+function SkillsForm({ nextStep, prevStep }) {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const {
+    control,
     register,
     handleSubmit,
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      skills: [
+        {
+          name: "",
+        },
+      ],
+    },
+  });
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "skills",
+  });
 
   const onSubmit = (data) => {
-    dispatch(saveSkills(data));
-    navigate("/preview");
+    const skillsArray = data.skills.map((skill) => skill.name);
+    dispatch(saveSkills(skillsArray));
+    nextStep();
   };
 
   return (
@@ -32,97 +45,88 @@ function SkillsForm({ prevStep }) {
         fontWeight="bold"
         gutterBottom
       >
-        Key Skills
+        Skills
       </Typography>
 
       <Typography
         color="text.secondary"
         sx={{ mb: 4 }}
       >
-        Add your technical and professional skills to showcase your abilities.
+        Add your technical and professional skills.
       </Typography>
-
 
       <form onSubmit={handleSubmit(onSubmit)}>
 
-        <Grid container spacing={3}>
+        {fields.map((field, index) => (
+          <Box
+            key={field.id}
+            sx={{
+              mb: 3,
+              p: 3,
+              border: "1px solid #ddd",
+              borderRadius: 2,
+            }}
+          >
 
-          <Grid item xs={12}>
-            <TextField
-              label="Skill 1"
-              placeholder="Example: React.js"
-              fullWidth
-              {...register("skill1")}
-            />
-          </Grid>
+            <Grid container spacing={2}>
 
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  label={`Skill ${index + 1}`}
+                  placeholder="React.js"
+                  {...register(`skills.${index}.name`)}
+                />
+              </Grid>
 
-          <Grid item xs={12}>
-            <TextField
-              label="Skill 2"
-              placeholder="Example: JavaScript"
-              fullWidth
-              {...register("skill2")}
-            />
-          </Grid>
+              {fields.length > 1 && (
+                <Grid item xs={12}>
+                  <Button
+                    color="error"
+                    onClick={() => remove(index)}
+                  >
+                    Remove Skill
+                  </Button>
+                </Grid>
+              )}
 
+            </Grid>
 
-          <Grid item xs={12}>
-            <TextField
-              label="Skill 3"
-              placeholder="Example: Node.js"
-              fullWidth
-              {...register("skill3")}
-            />
-          </Grid>
+          </Box>
+        ))}
 
+        <Button
+          variant="outlined"
+          sx={{ mb: 3 }}
+          onClick={() =>
+            append({
+              name: "",
+            })
+          }
+        >
+          + Add Skill
+        </Button>
 
-          <Grid item xs={12}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        >
+          <Button
+            variant="outlined"
+            onClick={prevStep}
+          >
+            ← Back
+          </Button>
 
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                mt: 2,
-              }}
-            >
-
-              <Button
-                variant="outlined"
-                size="large"
-                onClick={prevStep}
-                sx={{
-                  px: 4,
-                  py: 1.2,
-                  borderRadius: 3,
-                  textTransform: "none",
-                  fontWeight: "bold",
-                }}
-              >
-                ← Back
-              </Button>
-
-
-              <Button
-                variant="contained"
-                size="large"
-                type="submit"
-                sx={{
-                  px: 5,
-                  py: 1.2,
-                  borderRadius: 3,
-                  textTransform: "none",
-                  fontWeight: "bold",
-                }}
-              >
-                Preview →
-              </Button>
-
-            </Box>
-
-          </Grid>
-
-        </Grid>
+          <Button
+            variant="contained"
+            type="submit"
+          >
+            Next →
+          </Button>
+        </Box>
 
       </form>
 

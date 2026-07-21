@@ -13,16 +13,20 @@ import Navbar from "../components/Navbar";
 import PersonalForm from "../components/forms/PersonalForm";
 import ExperienceForm from "../components/forms/ExperienceForm";
 import EducationForm from "../components/forms/EducationForm";
+import ProjectsForm from "../components/forms/ProjectsForm";
 import SkillsForm from "../components/forms/SkillsForm";
+import CertificationsForm from "../components/forms/CertificationsForm";
 
 function Details() {
   const [step, setStep] = useState(0);
 
   const menu = [
-    "Personal Info",
-    "Work Experience",
+    "Personal Information",
+    "Experience",
     "Education",
-    "Key Skills",
+    "Projects",
+    "Skills",
+    "Certifications",
   ];
 
   return (
@@ -31,7 +35,7 @@ function Details() {
 
       <Box
         sx={{
-          maxWidth: "1200px",
+          maxWidth: "1300px",
           margin: "40px auto",
           display: "flex",
           gap: 4,
@@ -39,6 +43,7 @@ function Details() {
         }}
       >
         {/* Sidebar */}
+
         <Paper
           elevation={3}
           sx={{
@@ -50,10 +55,10 @@ function Details() {
           <Typography
             variant="h6"
             fontWeight="bold"
-            mb={2}
             align="center"
+            mb={2}
           >
-            Resume Sections
+            Resume Builder
           </Typography>
 
           <List>
@@ -73,7 +78,8 @@ function Details() {
           </List>
         </Paper>
 
-        {/* Form */}
+        {/* Forms */}
+
         <Paper
           elevation={3}
           sx={{
@@ -83,7 +89,9 @@ function Details() {
           }}
         >
           {step === 0 && (
-            <PersonalForm nextStep={() => setStep(1)} />
+            <PersonalForm
+              nextStep={() => setStep(1)}
+            />
           )}
 
           {step === 1 && (
@@ -101,8 +109,22 @@ function Details() {
           )}
 
           {step === 3 && (
-            <SkillsForm
+            <ProjectsForm
               prevStep={() => setStep(2)}
+              nextStep={() => setStep(4)}
+            />
+          )}
+
+          {step === 4 && (
+            <SkillsForm
+              prevStep={() => setStep(3)}
+              nextStep={() => setStep(5)}
+            />
+          )}
+
+          {step === 5 && (
+            <CertificationsForm
+              prevStep={() => setStep(4)}
             />
           )}
         </Paper>

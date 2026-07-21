@@ -1,106 +1,324 @@
-import { Box, Typography, Divider } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Divider,
+  Grid,
+  Avatar,
+  Chip,
+} from "@mui/material";
 import { useSelector } from "react-redux";
 
 function ProfessionalTemplate() {
-
   const {
     personal,
-    experience,
     education,
+    experience,
+    projects,
     skills,
+    certifications,
   } = useSelector((state) => state.resume);
-
 
   return (
     <Box
       id="resume"
       sx={{
-        width: "100%",
-        minHeight: "1050px",
-        padding: 5,
-        backgroundColor: "#fff",
+        width: "210mm",
+        minHeight: "297mm",
+        background: "#fff",
+        mx: "auto",
+        boxShadow: 3,
+        overflow: "hidden",
       }}
     >
+      {/* Header */}
 
-      <Typography
-        variant="h3"
-        fontWeight="bold"
+      <Box
+        sx={{
+          background: "#1E3A8A",
+          color: "white",
+          p: 4,
+        }}
       >
-        {personal.fullName || "Your Name"}
-      </Typography>
+        <Grid container spacing={3} alignItems="center">
 
+          <Grid item xs={3}>
+            <Avatar
+              src={personal.photo}
+              sx={{
+                width: 120,
+                height: 120,
+                border: "4px solid white",
+              }}
+            />
+          </Grid>
 
-      <Typography>
-        {personal.email}
-      </Typography>
+          <Grid item xs={9}>
 
-      <Typography>
-        {personal.phone}
-      </Typography>
+            <Typography
+              variant="h3"
+              fontWeight="bold"
+            >
+              {personal.fullName}
+            </Typography>
 
+            <Typography sx={{ mt: 1 }}>
+              {personal.jobTitle}
+            </Typography>
 
-      <Divider sx={{ my: 3 }} />
+            <Typography sx={{ mt: 2 }}>
+              Email: {personal.email}
+            </Typography>
 
+            <Typography>
+              Phone: {personal.phone}
+            </Typography>
 
-      <Typography variant="h5" fontWeight="bold">
-        Experience
-      </Typography>
+            <Typography>
+              Address: {personal.address}
+            </Typography>
 
-      <Typography fontWeight="bold">
-        {experience.role}
-      </Typography>
+            <Typography>
+              LinkedIn: {personal.linkedin}
+            </Typography>
 
-      <Typography>
-        {experience.company}
-      </Typography>
+            <Typography>
+              GitHub: {personal.github}
+            </Typography>
 
-      <Typography>
-        {experience.duration}
-      </Typography>
+            <Typography>
+              Portfolio: {personal.portfolio}
+            </Typography>
 
-      <Typography sx={{ mt: 1 }}>
-        {experience.description}
-      </Typography>
+          </Grid>
 
+        </Grid>
 
-      <Divider sx={{ my: 3 }} />
+      </Box>
 
+      <Grid container>
 
-      <Typography variant="h5" fontWeight="bold">
-        Education
-      </Typography>
+        {/* Left Column */}
 
-      <Typography>
-        {education.degree}
-      </Typography>
+        <Grid item xs={4}>
 
-      <Typography>
-        {education.college}
-      </Typography>
+          <Box
+            sx={{
+              background: "#F8FAFC",
+              minHeight: "100%",
+              p: 3,
+            }}
+          >
+                        <Typography
+              variant="h6"
+              fontWeight="bold"
+              color="primary"
+            >
+              Skills
+            </Typography>
 
+            <Divider sx={{ mb: 2 }} />
 
-      <Divider sx={{ my: 3 }} />
+            <Box
+              sx={{
+                display: "flex",
+                flexWrap: "wrap",
+                gap: 1,
+              }}
+            >
+              {skills.map((skill, index) => (
+                <Chip
+                  key={index}
+                  label={skill}
+                  size="small"
+                  color="primary"
+                  variant="outlined"
+                />
+              ))}
+            </Box>
 
+            <Box sx={{ mt: 5 }}>
 
-      <Typography variant="h5" fontWeight="bold">
-        Skills
-      </Typography>
+              <Typography
+                variant="h6"
+                fontWeight="bold"
+                color="primary"
+              >
+                Education
+              </Typography>
 
-      <Typography>
-        • {skills.skill1}
-      </Typography>
+              <Divider sx={{ mb: 2 }} />
 
-      <Typography>
-        • {skills.skill2}
-      </Typography>
+              {education.map((item, index) => (
+                <Box key={index} sx={{ mb: 2 }}>
 
-      <Typography>
-        • {skills.skill3}
-      </Typography>
+                  <Typography fontWeight="bold">
+                    {item.degree}
+                  </Typography>
 
+                  <Typography variant="body2">
+                    {item.college}
+                  </Typography>
+
+                  <Typography variant="body2">
+                    {item.year}
+                  </Typography>
+
+                  <Typography variant="body2">
+                    {item.percentage}
+                  </Typography>
+
+                </Box>
+              ))}
+
+            </Box>
+
+            <Box sx={{ mt: 5 }}>
+
+              <Typography
+                variant="h6"
+                fontWeight="bold"
+                color="primary"
+              >
+                Certifications
+              </Typography>
+
+              <Divider sx={{ mb: 2 }} />
+
+              {certifications.map((item, index) => (
+                <Box key={index} sx={{ mb: 2 }}>
+
+                  <Typography fontWeight="bold">
+                    {item.certificate}
+                  </Typography>
+
+                  <Typography variant="body2">
+                    {item.organization}
+                  </Typography>
+
+                  <Typography variant="body2">
+                    {item.year}
+                  </Typography>
+
+                </Box>
+              ))}
+
+            </Box>
+
+          </Box>
+
+        </Grid>
+
+        {/* Right Column */}
+
+        <Grid item xs={8}>
+
+          <Box sx={{ p: 4 }}>
+
+            <Typography
+              variant="h5"
+              fontWeight="bold"
+              color="primary"
+            >
+              Professional Summary
+            </Typography>
+
+            <Divider sx={{ mb: 2 }} />
+
+            <Typography color="text.secondary">
+              {personal.summary}
+            </Typography>
+
+            <Box sx={{ mt: 5 }}>
+
+              <Typography
+                variant="h5"
+                fontWeight="bold"
+                color="primary"
+              >
+                Experience
+              </Typography>
+
+              <Divider sx={{ mb: 2 }} />
+
+              {experience.map((item, index) => (
+                <Box key={index} sx={{ mb: 3 }}>
+
+                  <Typography fontWeight="bold">
+                    {item.role}
+                  </Typography>
+
+                  <Typography color="text.secondary">
+                    {item.company}
+                  </Typography>
+
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                  >
+                    {item.duration}
+                  </Typography>
+
+                  <Typography sx={{ mt: 1 }}>
+                    {item.description}
+                  </Typography>
+
+                </Box>
+              ))}
+
+            </Box>
+
+            <Box sx={{ mt: 5 }}>
+
+              <Typography
+                variant="h5"
+                fontWeight="bold"
+                color="primary"
+              >
+                Projects
+              </Typography>
+
+              <Divider sx={{ mb: 2 }} />
+                          {projects.map((item, index) => (
+                <Box key={index} sx={{ mb: 3 }}>
+
+                  <Typography fontWeight="bold">
+                    {item.title}
+                  </Typography>
+
+                  <Typography color="text.secondary">
+                    <strong>Tech Stack:</strong> {item.techStack}
+                  </Typography>
+
+                  {item.github && (
+                    <Typography variant="body2">
+                      <strong>GitHub:</strong> {item.github}
+                    </Typography>
+                  )}
+
+                  {item.liveDemo && (
+                    <Typography variant="body2">
+                      <strong>Live Demo:</strong> {item.liveDemo}
+                    </Typography>
+                  )}
+
+                  <Typography sx={{ mt: 1 }}>
+                    {item.description}
+                  </Typography>
+
+                </Box>
+              ))}
+
+            </Box>
+
+          </Box>
+
+        </Grid>
+
+      </Grid>
 
     </Box>
   );
 }
 
 export default ProfessionalTemplate;
+          
