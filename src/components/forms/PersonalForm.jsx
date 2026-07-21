@@ -49,7 +49,6 @@ function PersonalForm({ nextStep }) {
 
   return (
     <Box>
-
       <Typography
         variant="h4"
         fontWeight="bold"
@@ -66,9 +65,7 @@ function PersonalForm({ nextStep }) {
       </Typography>
 
       <form onSubmit={handleSubmit(onSubmit)}>
-
         <Grid container spacing={3}>
-
           <Grid
             item
             xs={12}
@@ -100,7 +97,6 @@ function PersonalForm({ nextStep }) {
                 onChange={handlePhoto}
               />
             </Button>
-
           </Grid>
 
           <Grid item xs={12} md={6}>
@@ -109,6 +105,10 @@ function PersonalForm({ nextStep }) {
               fullWidth
               {...register("fullName", {
                 required: "Full Name is required",
+                minLength: {
+                  value: 3,
+                  message: "Minimum 3 characters required",
+                },
               })}
               error={!!errors.fullName}
               helperText={errors.fullName?.message}
@@ -130,6 +130,10 @@ function PersonalForm({ nextStep }) {
               fullWidth
               {...register("email", {
                 required: "Email is required",
+                pattern: {
+                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                  message: "Enter a valid email address",
+                },
               })}
               error={!!errors.email}
               helperText={errors.email?.message}
@@ -140,7 +144,15 @@ function PersonalForm({ nextStep }) {
             <TextField
               label="Phone Number"
               fullWidth
-              {...register("phone")}
+              {...register("phone", {
+                required: "Phone Number is required",
+                pattern: {
+                  value: /^[6-9]\d{9}$/,
+                  message: "Enter a valid 10-digit phone number",
+                },
+              })}
+              error={!!errors.phone}
+              helperText={errors.phone?.message}
             />
           </Grid>
 
@@ -148,7 +160,11 @@ function PersonalForm({ nextStep }) {
             <TextField
               label="Address"
               fullWidth
-              {...register("address")}
+              {...register("address", {
+                required: "Address is required",
+              })}
+              error={!!errors.address}
+              helperText={errors.address?.message}
             />
           </Grid>
 
@@ -156,7 +172,14 @@ function PersonalForm({ nextStep }) {
             <TextField
               label="LinkedIn URL"
               fullWidth
-              {...register("linkedin")}
+              {...register("linkedin", {
+                pattern: {
+                  value: /^https?:\/\/.+/,
+                  message: "Enter a valid URL",
+                },
+              })}
+              error={!!errors.linkedin}
+              helperText={errors.linkedin?.message}
             />
           </Grid>
 
@@ -164,7 +187,14 @@ function PersonalForm({ nextStep }) {
             <TextField
               label="GitHub URL"
               fullWidth
-              {...register("github")}
+              {...register("github", {
+                pattern: {
+                  value: /^https?:\/\/.+/,
+                  message: "Enter a valid URL",
+                },
+              })}
+              error={!!errors.github}
+              helperText={errors.github?.message}
             />
           </Grid>
 
@@ -172,7 +202,14 @@ function PersonalForm({ nextStep }) {
             <TextField
               label="Portfolio Website"
               fullWidth
-              {...register("portfolio")}
+              {...register("portfolio", {
+                pattern: {
+                  value: /^https?:\/\/.+/,
+                  message: "Enter a valid URL",
+                },
+              })}
+              error={!!errors.portfolio}
+              helperText={errors.portfolio?.message}
             />
           </Grid>
 
@@ -183,7 +220,15 @@ function PersonalForm({ nextStep }) {
               multiline
               rows={5}
               placeholder="Write a short professional summary..."
-              {...register("summary")}
+              {...register("summary", {
+                required: "Professional Summary is required",
+                minLength: {
+                  value: 20,
+                  message: "Summary should be at least 20 characters",
+                },
+              })}
+              error={!!errors.summary}
+              helperText={errors.summary?.message}
             />
           </Grid>
 
@@ -203,11 +248,8 @@ function PersonalForm({ nextStep }) {
               </Button>
             </Box>
           </Grid>
-
         </Grid>
-
       </form>
-
     </Box>
   );
 }

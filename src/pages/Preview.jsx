@@ -8,6 +8,10 @@ import {
   TextField,
   Typography,
   Divider,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from "@mui/material";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -31,6 +35,7 @@ function Preview() {
   );
 
   const [resumeName, setResumeName] = useState("");
+  const [open, setOpen] = useState(false);
 
   const downloadPDF = async () => {
     const resume = document.getElementById("resume");
@@ -44,7 +49,6 @@ function Preview() {
     const pdf = new jsPDF("p", "mm", "a4");
 
     const imgWidth = 210;
-
     const imgHeight =
       (canvas.height * imgWidth) / canvas.width;
 
@@ -58,6 +62,8 @@ function Preview() {
     );
 
     pdf.save(`${resumeName || "Resume"}.pdf`);
+
+    setOpen(true);
   };
 
   const renderTemplate = () => {
@@ -100,8 +106,6 @@ function Preview() {
             alignItems: "flex-start",
           }}
         >
-          {/* Resume Preview */}
-
           <Paper
             elevation={8}
             sx={{
@@ -113,8 +117,6 @@ function Preview() {
           >
             {renderTemplate()}
           </Paper>
-
-          {/* Right Panel */}
 
           <Paper
             elevation={8}
@@ -146,12 +148,12 @@ function Preview() {
 
             <Button
               fullWidth
+              sx={{ mb: 2 }}
               variant={
                 selectedTemplate === "professional"
                   ? "contained"
                   : "outlined"
               }
-              sx={{ mb: 2 }}
               onClick={() =>
                 dispatch(changeTemplate("professional"))
               }
@@ -161,12 +163,12 @@ function Preview() {
 
             <Button
               fullWidth
+              sx={{ mb: 2 }}
               variant={
                 selectedTemplate === "modern"
                   ? "contained"
                   : "outlined"
               }
-              sx={{ mb: 2 }}
               onClick={() =>
                 dispatch(changeTemplate("modern"))
               }
@@ -176,12 +178,12 @@ function Preview() {
 
             <Button
               fullWidth
+              sx={{ mb: 4 }}
               variant={
                 selectedTemplate === "simple"
                   ? "contained"
                   : "outlined"
               }
-              sx={{ mb: 4 }}
               onClick={() =>
                 dispatch(changeTemplate("simple"))
               }
@@ -228,6 +230,30 @@ function Preview() {
           </Paper>
         </Box>
       </Container>
+
+      <Dialog
+        open={open}
+        onClose={() => setOpen(false)}
+      >
+        <DialogTitle>
+          Download Successful
+        </DialogTitle>
+
+        <DialogContent>
+          <Typography>
+            Your resume has been downloaded successfully.
+          </Typography>
+        </DialogContent>
+
+        <DialogActions>
+          <Button
+            variant="contained"
+            onClick={() => setOpen(false)}
+          >
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 }
