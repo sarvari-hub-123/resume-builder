@@ -30,9 +30,7 @@ function Preview() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const selectedTemplate = useSelector(
-    (state) => state.resume.template
-  );
+  const selectedTemplate = useSelector((state) => state.resume.template);
 
   const [resumeName, setResumeName] = useState("");
   const [open, setOpen] = useState(false);
@@ -49,21 +47,15 @@ function Preview() {
     const pdf = new jsPDF("p", "mm", "a4");
 
     const imgWidth = 210;
-    const imgHeight =
-      (canvas.height * imgWidth) / canvas.width;
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-    pdf.addImage(
-      imgData,
-      "PNG",
-      0,
-      0,
-      imgWidth,
-      imgHeight
-    );
+    pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
 
     pdf.save(`${resumeName || "Resume"}.pdf`);
 
-    setOpen(true);
+    setTimeout(() => {
+      setOpen(true);
+    }, 300);
   };
 
   const renderTemplate = () => {
@@ -83,19 +75,11 @@ function Preview() {
       <Navbar />
 
       <Container maxWidth="xl" sx={{ mt: 5, mb: 5 }}>
-        <Typography
-          variant="h3"
-          align="center"
-          fontWeight="bold"
-        >
+        <Typography variant="h3" align="center" fontWeight="bold">
           Resume Preview
         </Typography>
 
-        <Typography
-          align="center"
-          color="text.secondary"
-          sx={{ mb: 5 }}
-        >
+        <Typography align="center" color="text.secondary" sx={{ mb: 5 }}>
           Choose a template and download your professional resume.
         </Typography>
 
@@ -128,21 +112,13 @@ function Preview() {
               top: 90,
             }}
           >
-            <Typography
-              variant="h5"
-              fontWeight="bold"
-              gutterBottom
-            >
+            <Typography variant="h5" fontWeight="bold" gutterBottom>
               Controls
             </Typography>
 
             <Divider sx={{ mb: 3 }} />
 
-            <Typography
-              variant="subtitle1"
-              fontWeight="bold"
-              mb={2}
-            >
+            <Typography variant="subtitle1" fontWeight="bold" mb={2}>
               Choose Template
             </Typography>
 
@@ -150,13 +126,9 @@ function Preview() {
               fullWidth
               sx={{ mb: 2 }}
               variant={
-                selectedTemplate === "professional"
-                  ? "contained"
-                  : "outlined"
+                selectedTemplate === "professional" ? "contained" : "outlined"
               }
-              onClick={() =>
-                dispatch(changeTemplate("professional"))
-              }
+              onClick={() => dispatch(changeTemplate("professional"))}
             >
               Professional
             </Button>
@@ -164,14 +136,8 @@ function Preview() {
             <Button
               fullWidth
               sx={{ mb: 2 }}
-              variant={
-                selectedTemplate === "modern"
-                  ? "contained"
-                  : "outlined"
-              }
-              onClick={() =>
-                dispatch(changeTemplate("modern"))
-              }
+              variant={selectedTemplate === "modern" ? "contained" : "outlined"}
+              onClick={() => dispatch(changeTemplate("modern"))}
             >
               Modern
             </Button>
@@ -179,23 +145,13 @@ function Preview() {
             <Button
               fullWidth
               sx={{ mb: 4 }}
-              variant={
-                selectedTemplate === "simple"
-                  ? "contained"
-                  : "outlined"
-              }
-              onClick={() =>
-                dispatch(changeTemplate("simple"))
-              }
+              variant={selectedTemplate === "simple" ? "contained" : "outlined"}
+              onClick={() => dispatch(changeTemplate("simple"))}
             >
               Simple
             </Button>
 
-            <Typography
-              variant="subtitle1"
-              fontWeight="bold"
-              mb={2}
-            >
+            <Typography variant="subtitle1" fontWeight="bold" mb={2}>
               PDF File Name
             </Typography>
 
@@ -203,9 +159,7 @@ function Preview() {
               fullWidth
               label="Resume Name"
               value={resumeName}
-              onChange={(e) =>
-                setResumeName(e.target.value)
-              }
+              onChange={(e) => setResumeName(e.target.value)}
               sx={{ mb: 4 }}
             />
 
@@ -231,25 +185,15 @@ function Preview() {
         </Box>
       </Container>
 
-      <Dialog
-        open={open}
-        onClose={() => setOpen(false)}
-      >
-        <DialogTitle>
-          Download Successful
-        </DialogTitle>
+      <Dialog open={open} onClose={() => setOpen(false)}>
+        <DialogTitle>Download Successful</DialogTitle>
 
         <DialogContent>
-          <Typography>
-            Your resume has been downloaded successfully.
-          </Typography>
+          <Typography>Your resume has been downloaded successfully.</Typography>
         </DialogContent>
 
         <DialogActions>
-          <Button
-            variant="contained"
-            onClick={() => setOpen(false)}
-          >
+          <Button variant="contained" onClick={() => setOpen(false)}>
             OK
           </Button>
         </DialogActions>
